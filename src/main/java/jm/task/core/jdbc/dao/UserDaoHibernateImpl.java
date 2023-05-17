@@ -34,6 +34,9 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             System.out.println("TABLE OK");
         } catch (HibernateException e) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
             System.out.println("TABLE EXCEPTION");
 
@@ -57,6 +60,9 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             System.out.println("DELETE OK");
         } catch (HibernateException e) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
             System.out.println("DELETE EXCEPTION");
         }
@@ -67,18 +73,21 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-
+            Transaction transaction = null;
 
 
         try(Session session = sessionFactory.openSession()) {
 
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             User user = new User(name, lastName, age);
             session.persist(user);
-            session.getTransaction().commit();
+            transaction.commit();
 
             System.out.println("USER OK");
         }catch (HibernateException e) {
+                if(transaction != null) {
+                    transaction.rollback();
+                }
             e.printStackTrace();
             System.out.println("saveUser EXCEPTION");
         }
@@ -97,6 +106,9 @@ public class UserDaoHibernateImpl implements UserDao {
 
             System.out.println("REMOVE OK");
         } catch (HibernateException e) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
             System.out.println("remove EXCEPTION");
         }
@@ -119,6 +131,9 @@ public class UserDaoHibernateImpl implements UserDao {
 
             System.out.println("getAll OK");
         } catch (HibernateException e) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
             System.out.println("getAll EXCEPTION");
         }
@@ -139,6 +154,9 @@ public class UserDaoHibernateImpl implements UserDao {
 
             System.out.println("cleanUser OK");
         } catch (HibernateException e) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
             System.out.println("cleanUser EXCEPTION");
         }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService  {
 
-    UserDao userDao = new UserDaoHibernateImpl();
+    private final UserDao userDao = new UserDaoHibernateImpl();
 
     public void createUsersTable() {
         userDao.createUsersTable();
@@ -30,10 +30,12 @@ public class UserServiceImpl implements UserService  {
     }
 
     public void removeUserById(long id){
+
         userDao.removeUserById(id);
     }
 
     public List<User> getAllUsers() {
+
         return userDao.getAllUsers();
     }
 
